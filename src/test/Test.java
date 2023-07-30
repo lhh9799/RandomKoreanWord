@@ -1,62 +1,37 @@
 package test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.Scanner;
+
+import com.ssafy.util.CheckSecurityWords;
 
 public class Test {
-	
-	public static List<List<String>> readCSV() {
-		List<List<String>> csvList = new ArrayList<List<String>>();
-		File csv = new File("./src/data/han.csv");
-		BufferedReader br = null;
-		String line = "";
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		CheckSecurityWords security = CheckSecurityWords.getSecurity();
+
 		
-		try {
-			br = new BufferedReader(new FileReader(csv));
+		while(security.getTryCount() < 5) {
+			String securityWord = security.createSecurityWord(System.currentTimeMillis() * 10000);
 			
-			while((line = br.readLine()) != null) {
-				List<String> aLine = new ArrayList<String>();
-				String[] lineArr = line.split(",");
-				aLine = Arrays.asList(lineArr);
-				csvList.add(aLine);
-			}
+			System.out.print("보안문자: ");
+			System.out.println(securityWord);
+			System.out.println();
 			
-		} catch(FileNotFoundException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if(br != null) {
-					br.close();
-				}
-			} catch(IOException e) {
-				e.printStackTrace();
+			System.out.print("입력하세요: ");
+			String input = sc.next();
+			
+			if (security.isCorrect(input)) {
+				System.out.println("OK\n\n");
+				break;
+			} else {
+				System.out.println("Fail\n\n");
 			}
 		}
 		
-		return csvList;
-	}
+		System.out.println("보안문자 관련 기능 종료");
 
-	public static void main(String[] args) {
-		List<List<String>> list = readCSV();
-		Random random = new Random();
-		
-		int indexA = random.nextInt(10000);
-		int indexB = random.nextInt(10000);
-		
-		String a = list.get(0).get(indexA);
-		String b = list.get(0).get(indexB);
-		
-		System.out.println(a + " " + b);
-
+		sc.close();
 	}
 
 }
