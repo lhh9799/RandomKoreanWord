@@ -11,18 +11,20 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.ssafy.exception.DuplicatedException;
 import com.ssafy.exception.InvalidDataException;
 import com.ssafy.exception.RecordNotFoundException;
 import com.ssafy.util.Utility;
+import com.ssafy.view.UserTest;
 
 /**
  * 1. Singleton pattern 2. implements 3. Collection 4. Exception
  */
 public class UserManagerImpl implements UserManager {
-//	private List<User> list = new ArrayList<>();
-	private List<User> list;	//파일로부터 읽어올 정보가 존재하지 않으면
+	private List<User> list = new ArrayList<>();
+//	private List<User> list;	//파일로부터 읽어올 정보가 존재하지 않으면
 
 	private static UserManagerImpl instance = new UserManagerImpl();
 
@@ -95,7 +97,7 @@ public class UserManagerImpl implements UserManager {
 			return list.get(index);
 		}
 
-		throw new RecordNotFoundException(id);
+		throw new RecordNotFoundException(id + " 아이디를 가진 사용자");
 		// return null;
 	}
 
@@ -107,7 +109,19 @@ public class UserManagerImpl implements UserManager {
 			}
 		}
 
-		throw new RecordNotFoundException(name);
+		throw new RecordNotFoundException(name + " 이름을 가진 사용자");
+		// return null;
+	}
+	
+	@Override
+	public String findUserPw(String id, String name) throws RecordNotFoundException {
+		for (int index = 0; index < list.size(); index++) {
+			if (list.get(index).getId().equals(id) && list.get(index).getName().equals(name)) {
+				return list.get(index).getPw();
+			}
+		}
+
+		throw new RecordNotFoundException(name + " 이름을 가진 사용자");
 		// return null;
 	}
 
@@ -123,32 +137,77 @@ public class UserManagerImpl implements UserManager {
 			}
 		} else {
 //			throw new RecordNotFoundException();
-			throw new RecordNotFoundException(id); // 보안이슈 문제
+			throw new RecordNotFoundException(id + "아이디를 가진 사용자"); // 보안이슈 문제
 		}
 	}
 
 	@Override
 	public void updateUser(User user) throws RecordNotFoundException {
 		// TODO Auto-generated method stub
-
+		int index = isExist(user.getId());
+		
+		if (index == -1) {
+			throw new RecordNotFoundException(user.getId());
+		}
+		
+		list.get(index).setPw(user.getPw());
 	}
 
 	@Override
+	public void updateUser(String id, String pw) throws RecordNotFoundException {
+		// TODO Auto-generated method stub
+		int index = isExist(id);
+		
+		if (index == -1) {
+			throw new RecordNotFoundException(id);
+		}
+		
+		list.get(index).setPw(pw);
+	}
+	
+	@Override
 	public void updateUser(String id, String pw, String name) throws RecordNotFoundException {
 		// TODO Auto-generated method stub
-
+		updateUser(id, pw);
+		list.get(isExist(id)).setName(name);
 	}
 
 	@Override
 	public void updateUser(String id, String pw, String name, String mobile) throws RecordNotFoundException {
 		// TODO Auto-generated method stub
-
+		list.get(isExist(id)).setMobile(mobile);
 	}
 
 	@Override
-	public void updateUser(Map<String, String> map) throws RecordNotFoundException {
+	public void updateUser(String id, Map<String, String> map) throws RecordNotFoundException {
 		// TODO Auto-generated method stub
-
+		int index = isExist(id);
+		
+		if (index == -1) {
+			for(User u : list) {
+				System.out.println(u);
+			}
+			throw new RecordNotFoundException(id);
+		}
+		
+		User targetUser = list.get(index);
+		
+		for(Entry<String, String> i : map.entrySet()) {
+			String old_PW = i.getKey();
+			String new_PW = i.getValue();
+			
+			if(targetUser.getPw().equals(old_PW)) {
+				targetUser.setPw(map.get(old_PW));
+				System.out.println("비밀번호 변경 성공");
+				saveData();
+				saveDataCsv();
+			}
+			else {
+				System.out.println("old_PW: " + old_PW);
+				System.out.println("new_PW: " + new_PW);
+				System.out.println("현재 비밀번호가 일치하지 않습니다.");
+			}
+		}
 	}
 
 	// 프로그램 종료시에 사용자의 정보들이 저장된 자료저장구조 객체 파일 저장
@@ -160,7 +219,7 @@ public class UserManagerImpl implements UserManager {
 		File foldername = new File("src/data");
 		if (!foldername.exists()) { // 폴더가 존재하지 않으면
 			foldername.mkdir();
-			System.out.println("[INFO] 파일 저장폴더를 생성합니다.:" + foldername.getAbsolutePath());
+//			System.out.println("[INFO] 파일 저장폴더를 생성합니다.:" + foldername.getAbsolutePath());
 			try {
 				System.out.println("[INFO] 파일 저장폴더를 생성합니다.:" + foldername.getCanonicalPath());
 			} catch (IOException e) {
@@ -222,8 +281,9 @@ public class UserManagerImpl implements UserManager {
 			//저장된 파일이 존재하지 않으므로 읽어와서 로드할 객체 정보가 없음, 따라서 Collection 생성 할당해야함
 			//멤버변수에 선언만 되어있다면!!!
 			//private List<User> list;
-			System.out.println("[INFO] 로드할 파일 정보가 없습니다.");
-			list = new ArrayList<>();
+			System.out.println("[INFO] 로드할 파일 정보가 없습니다. 테스트용 회원정보 파일을 생성합니다.");
+//			list = new ArrayList<>();
+			UserTest.makeUserDataFile();
 		}
 	}
 
@@ -272,14 +332,14 @@ public class UserManagerImpl implements UserManager {
     public User login(String id, String pw) throws RecordNotFoundException, InvalidDataException {
         int index = isExist(id);
         if(index==-1) {
-            throw new RecordNotFoundException();
+//            throw new RecordNotFoundException();
+            throw new RecordNotFoundException("아이디 또는 비밀번호 ");
         }
         if (list.get(index).getPw().equals(pw)) {
-            
+            return list.get(index);
         } else {
-            throw new InvalidDataException();
+            throw new InvalidDataException("아이디 또는 비밀번호 ");
         }
-        return null;
     }
     
 }

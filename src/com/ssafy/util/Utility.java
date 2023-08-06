@@ -30,7 +30,7 @@ import java.util.Locale;
  *
  */
 public class Utility {
-	public static final String DATE_PATTERN = "yyyy.MM.dd";
+	public static final String DATE_PATTERN = "yyyy.MM.dd.";
 	public static String getCurrentDate() {
 		return getCurrentDate(DATE_PATTERN, Locale.KOREA);
 	}
@@ -48,6 +48,7 @@ public class Utility {
 		return new SimpleDateFormat(pattern, locale).format(new Date());
 	}
 	
+	/*
 	public static void main(String[] args) {
 		System.out.println(Utility.getCurrentDate());
 		System.out.println(Utility.getCurrentDate("yyyy-MM-dd"));
@@ -58,5 +59,6 @@ public class Utility {
 		System.out.println(Utility.getCurrentDate("yyyy-MM-dd [a]hh:mm:ss", Locale.JAPAN));
 		System.out.println(Utility.getCurrentDate("yyyy-MM-dd [a]hh:mm:ss", Locale.CHINA));
 	}
+	*/
 	
 }

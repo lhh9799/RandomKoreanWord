@@ -2,14 +2,15 @@ package com.ssafy.util;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.TreeMap;
 
 /**
  * 파싱한 데이터 가지고 랜덤한 보안문자 생성 사용자가 입력한 보안문자 체킹
  */
 public class CheckSecurityWords {
-	private ArrayList<String> prenounList;
-	private ArrayList<String> nounList;
-
+	private TreeMap<Integer, String> prenounList;	//관형사
+	private TreeMap<Integer, String> nounList;		//명사
+	
 	private int prenounNum;
 	private int nounNum;
 
@@ -39,6 +40,10 @@ public class CheckSecurityWords {
 	 * 
 	 * @param 랜덤 위한 시드
 	 */
+	public String createSecurityWord() {
+		return createSecurityWord(System.currentTimeMillis() * 10000);
+	}
+	
 	public String createSecurityWord(long seed) {
 		Random random = new Random();
 		random.setSeed(seed);

@@ -3,12 +3,11 @@ package com.ssafy.util;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.TreeMap;
 
 
 public class CSVParser {
-	private List<String> words = new ArrayList<String>();;
+	private TreeMap<Integer, String> words = new TreeMap<Integer, String>();
     private int num;
     
     public CSVParser(String category) {
@@ -23,7 +22,7 @@ public class CSVParser {
             while((line = br.readLine()) != null) {
                 String[] tempStr = line.split(",");
                 for(int i = 0; i < tempStr.length; i++) {
-                	words.add(tempStr[i]);
+                	words.put(i, tempStr[i]);
                 	num++;
                 }
             }
@@ -32,12 +31,9 @@ public class CSVParser {
     	}
     }
     
-    public ArrayList<String> getWords() {
-    	if(!words.isEmpty()) {
-    		return (ArrayList<String>)words;
-    	}
+    public TreeMap<Integer, String> getWords() {
     	
-    	return null;
+    	return words;
     }
     
     public int getNum() {

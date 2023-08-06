@@ -1,11 +1,10 @@
-package test;
+package com.ssafy.util;
 
 import java.util.Scanner;
 
-import com.ssafy.util.CheckSecurityWords;
+public class CheckSecurityWordsTest {
 
-public class Test {
-
+	/*
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		CheckSecurityWords security = CheckSecurityWords.getSecurity();
@@ -33,5 +32,6 @@ public class Test {
 
 		sc.close();
 	}
+	*/
 
 }

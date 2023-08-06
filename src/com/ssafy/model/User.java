@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 //객체 입출력: 직렬화 객체
 public class User implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8522453566584619547L;
 	private String id;
 	private String pw;
 	private String name;
@@ -87,6 +91,22 @@ public class User implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public void showMyInfo() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("아이디: ");
+		buffer.append(id);
+		buffer.append(", 비밀번호: ");
+		buffer.append(pw);
+		buffer.append(", 이름: ");
+		buffer.append(name);
+		buffer.append(", 휴대폰: ");
+		buffer.append(mobile);
+		buffer.append(", 가입일: ");
+		buffer.append(entryDate);
+		
+		System.out.println(buffer.toString());
 	}
 	
 	

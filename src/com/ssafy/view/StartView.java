@@ -1,23 +1,37 @@
 package com.ssafy.view;
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 import com.ssafy.exception.DuplicatedException;
 import com.ssafy.exception.InvalidDataException;
+import com.ssafy.exception.InvalidPasswordException;
 import com.ssafy.exception.RecordNotFoundException;
 import com.ssafy.model.User;
 import com.ssafy.model.UserManager;
 import com.ssafy.model.UserManagerImpl;
+import com.ssafy.model.service.BulletinService;
+import com.ssafy.model.service.MainServiceImpl;
 
 public class StartView {
 	// 입력 device: 표준 입력장치
 	private Scanner in = new Scanner(System.in);
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	//사용자 관리를 위한 객체 생성
 	private UserManager mngr = UserManagerImpl.getInstance();
-	private String memberId;
-	private User currentUser;
-	private User user;
+	private User loginUser;
+	
+	//사용자 서비스를 위한 객체 생성
+	MainServiceImpl msi = MainServiceImpl.getInstance();
+	
+	//게시판 조회를 위한 객체 생성
+	BulletinService bs = BulletinService.getInstance();
 	
 	public void mainMenu() {
 		//서비스 시작전에 파일 저장 사용자
@@ -74,7 +88,15 @@ public class StartView {
 		printLine();
 
 		System.out.print("메뉴번호: " );
-		int menuNo = in.nextInt();
+//		int menuNo = in.nextInt();
+		int menuNo = 0;
+		try {
+			menuNo = Integer.parseInt(br.readLine());
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		switch(menuNo) {
 		case 1:
 			logoutMenu();
@@ -95,72 +117,57 @@ public class StartView {
 
 	public void loginMenu() {
 		printTitle("로그인");
-		System.out.print("아이디 : ");
-//		String memberId = in.next();
-		memberId = in.next();
-
-		System.out.print("비밀번호 : ");
-		String memberPw = in.next();
 		
 		try {
-			user = mngr.login(memberId, memberPw);
+			loginUser = msi.login();
+			serviceMainMenu(loginUser.getId());
 		} catch (RecordNotFoundException | InvalidDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getLocalizedMessage());
 		}
-		
-		printMessage(memberId + "님 사용자전용 서비스를 이용하세요");
-		serviceMainMenu(memberId);
-		
 	}	
 
 	public void joinMenu() {
-		printTitle("등록");
-		System.out.print("아이디 : ");
-		String id = in.next();
-		
-		System.out.print("비밀번호 : ");
-		String pw = in.next();
-		
-		System.out.print("이름 : ");
-		String name = in.next();
-		
-		System.out.print("휴대폰 : ");
-		String mobile = in.next();
-		
-		User user = new User();
-		user.setId(id);
-		user.setPw(pw);
-		user.setName(name);
-		user.setMobile(mobile);
-		
-		try {
-			mngr.addUser(user);
-			//회원 가입 성공 처리
-			//축하메세지 출력
-			//로그인 화면으로 이동
-			mngr.saveData();
-			mngr.saveDataCsv();
-			System.out.println("축하합니다. 가입되었습니다.");
-			myInfoMenu();
-			
-		} catch (DuplicatedException e) {
-			e.printStackTrace();
-		}
-		
 		printTitle("사용자가입");
+		try {
+			loginUser = msi.join();
+			myInfoMenu();
+		} catch(DuplicatedException e) {
+			System.out.println(e.getLocalizedMessage());
+		} catch (InvalidPasswordException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getLocalizedMessage());
+		}
 	}
 	
 	public void findIdMenu() {
 		printTitle("아이디찾기");
-	}	
+		String id;
+		
+		try {
+			id = msi.findId(loginUser);
+			System.out.printf("아이디는 %s 입니다.\n\n", id);
+		} catch (RecordNotFoundException e) {
+			System.out.println(e.getLocalizedMessage());
+		}
+	}
 
 	public void findPwMenu() {
 		printTitle("비밀번호찾기");
+		String pw = null;
+		
+		try {
+			pw = msi.findPw();
+//			System.out.printf("비밀번호는 %s 입니다.\n", pw);
+		} catch (RecordNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getLocalizedMessage());
+		}
 	}	
 
 	public void exitMenu() {
 		printTitle("프로그램을 종료합니다.");
+		mngr.saveData();
+		mngr.saveDataCsv();
 		System.exit(1);
 	}	
 
@@ -172,31 +179,27 @@ public class StartView {
 	public void myInfoMenu() {
 		printTitle("내정보조회");
 		try {
-			currentUser = mngr.getUser(memberId);
+			msi.myInfo(loginUser);
 		} catch (RecordNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getLocalizedMessage());
 		}
-		System.out.println(currentUser);
 	}
 
 	public void updatePwMenu() {
-		String[] line = in.nextLine().split(" ");
+		printTitle("암호변경");
 		
-		String ID = line[0];
-		String PW = line[1];
-		
-//		Map<String, String> map
-		
-//		ID
-		
-//		updateUser(Map<String, String> map);
-//		currentUser
-//		printTitle("암호변경");
+		try {
+			msi.updatePw(loginUser);
+		} catch (RecordNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getLocalizedMessage());
+		}
 	}
 
 	public void boardListMenu() {
 		printTitle("게시글조회");
+		
+		bs.load();
 	}
 	
 

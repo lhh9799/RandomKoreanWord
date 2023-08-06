@@ -11,27 +11,28 @@ import com.ssafy.model.User;
 import com.ssafy.model.UserManager;
 import com.ssafy.model.UserManagerImpl;
 import com.ssafy.util.Utility;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 public class UserTest {
 
-	public static void main(String[] args) {
-		User u1 = new User("user01", "pass01", "홍길동", "01012341000", "2023.07.24");
-		User u2 = new User("user02", "pass02", "강감찬", "01012342000", "2023.07.25");
-		User u4 = new User("user03", "pass03", "김유신", "01012343000", "2023.07.21");
-		User u5 = new User("user04", "pass04", "이순신", "01012344000", "2023.07.19");
-		User u3 = new User("user05", "pass05", "유관순", "01012345000","2023.06.19");
+//	public static void notMain(String[] args) {
+	public static void makeUserDataFile () {
+		User u1 = new User("user01", "pass01", "홍길동", "01012341000", "2023.07.24.");
+		User u2 = new User("user02", "pass02", "강감찬", "01012342000", "2023.07.25.");
+		User u4 = new User("user03", "pass03", "김유신", "01012343000", "2023.07.21.");
+		User u5 = new User("user04", "pass04", "이순신", "01012344000", "2023.07.19.");
+		User u3 = new User("user05", "pass05", "유관순", "01012345000","2023.06.19.");
 		
 		//step2 test
-		User u10 = new User("user10", "pass04", "이순신", "01012344000", "2023.07.19");
-		User u11 = new User("user11", "pass05", "유관순", "01012345000","2023.06.19");
+		User u10 = new User("user10", "pass04", "이순신", "01012344000", "2023.07.19.");
+		User u11 = new User("user11", "pass05", "유관순", "01012345000","2023.06.19.");
 		
 		// 사용자 관리를 위한 서비스 클래스 객체 생성
 		UserManager mngr = UserManagerImpl.getInstance();
 		
-		print("등록");
+//		print("등록");
 		try {
 			// valid
+			mngr.addUser(new User("a", "a", "Test", "010-1234-5678", Utility.getCurrentDate(Utility.DATE_PATTERN)));
 			mngr.addUser(u1);
 			mngr.addUser(u2);
 			mngr.addUser(u3);
@@ -56,7 +57,7 @@ public class UserTest {
 		} catch(DuplicatedException e) {
 			System.out.println(e.getMessage());
 		}
-		
+		/*
 		print("전체조회");
 		List<User> list = mngr.getUserList();
 		for(User u: list) {
@@ -98,7 +99,8 @@ public class UserTest {
 		for(User u: list) {
 			System.out.println(u);
 		}
-
+		 */
+		
 		//프로그램 종료전에 자료저장구조 객체 저장
 		mngr.saveData();
 		mngr.saveDataCsv();

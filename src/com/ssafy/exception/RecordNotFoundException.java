@@ -11,6 +11,6 @@ public class RecordNotFoundException extends Exception {
 	}
 	
 	public RecordNotFoundException(String message) {
-		super(message + " 데이터가 존재하지 않습니다.");
+		super(message + " 데이터가 존재하지 않습니다.\n");
 	}
 }
