@@ -38,7 +38,7 @@ public class User implements Serializable {
 		this.pw = pw;
 	}
 	public String getName() {
-		return Utility.getMaskedName(name);
+		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
