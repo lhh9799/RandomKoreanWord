@@ -17,11 +17,11 @@ public class UserTest {
 //	public static void notMain(String[] args) {
 	public static void makeUserDataFile () {
 		
-		User u1 = new User("user01", String.valueOf("pass01".hashCode()), "홍길동", "01012341000", "2023.07.24.");
-		User u2 = new User("user02", String.valueOf("pass02".hashCode()), "강감찬", "01012342000", "2023.07.25.");
-		User u4 = new User("user03", String.valueOf("pass03".hashCode()), "김유신", "01012343000", "2023.07.21.");
-		User u5 = new User("user04", String.valueOf("pass04".hashCode()), "이순신", "01012344000", "2023.07.19.");
-		User u3 = new User("user05", String.valueOf("pass05".hashCode()), "유관순", "01012345000","2023.06.19.");
+		User u1 = new User("user01", String.valueOf("pass01".hashCode()), "홍길동", "010-1234-1000", "2023.07.24.");
+		User u2 = new User("user02", String.valueOf("pass02".hashCode()), "강감찬", "010-1234-2000", "2023.07.25.");
+		User u4 = new User("user03", String.valueOf("pass03".hashCode()), "김유신", "010-1234-3000", "2023.07.21.");
+		User u5 = new User("user04", String.valueOf("pass04".hashCode()), "이순신", "010-1234-4000", "2023.07.19.");
+		User u3 = new User("user05", String.valueOf("pass05".hashCode()), "유관순", "010-1234-5000","2023.06.19.");
 		
 		//step2 test
 //		User u10 = new User("user10", "pass04", "이순신", "01012344000", "2023.07.19.");
