@@ -62,7 +62,7 @@ public class User implements Serializable {
 		buffer.append(", ");
 		buffer.append(pw);
 		buffer.append(", ");
-		buffer.append(Utility.getMaskedName(name));
+		buffer.append(name);
 		buffer.append(", ");
 		buffer.append(mobile);
 		buffer.append(", ");
