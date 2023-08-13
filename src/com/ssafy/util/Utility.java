@@ -48,6 +48,10 @@ public class Utility {
 		return new SimpleDateFormat(pattern, locale).format(new Date());
 	}
 	
+	public static String getMaskedName(String name) {
+		return name.replace(name.charAt(1) + "", "*"); 
+	}
+	
 	/*
 	public static void main(String[] args) {
 		System.out.println(Utility.getCurrentDate());

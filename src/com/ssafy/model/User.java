@@ -2,6 +2,8 @@ package com.ssafy.model;
 
 import java.io.Serializable;
 
+import com.ssafy.util.Utility;
+
 //객체 입출력: 직렬화 객체
 public class User implements Serializable {
 	/**
@@ -36,7 +38,7 @@ public class User implements Serializable {
 		this.pw = pw;
 	}
 	public String getName() {
-		return name;
+		return Utility.getMaskedName(name);
 	}
 	public void setName(String name) {
 		this.name = name;
@@ -60,7 +62,7 @@ public class User implements Serializable {
 		buffer.append(", ");
 		buffer.append(pw);
 		buffer.append(", ");
-		buffer.append(name);
+		buffer.append(Utility.getMaskedName(name));
 		buffer.append(", ");
 		buffer.append(mobile);
 		buffer.append(", ");
@@ -97,10 +99,8 @@ public class User implements Serializable {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("아이디: ");
 		buffer.append(id);
-		buffer.append(", 비밀번호: ");
-		buffer.append(pw);
 		buffer.append(", 이름: ");
-		buffer.append(name);
+		buffer.append(Utility.getMaskedName(name));
 		buffer.append(", 휴대폰: ");
 		buffer.append(mobile);
 		buffer.append(", 가입일: ");

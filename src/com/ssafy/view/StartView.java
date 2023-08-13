@@ -136,6 +136,8 @@ public class StartView {
 		} catch (InvalidPasswordException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getLocalizedMessage());
+		} catch (InvalidDataException e) {
+			System.out.println(e.getLocalizedMessage());
 		}
 	}
 	
@@ -147,6 +149,8 @@ public class StartView {
 			id = msi.findId(loginUser);
 			System.out.printf("아이디는 %s 입니다.\n\n", id);
 		} catch (RecordNotFoundException e) {
+			System.out.println(e.getLocalizedMessage());
+		} catch (InvalidDataException e) {
 			System.out.println(e.getLocalizedMessage());
 		}
 	}

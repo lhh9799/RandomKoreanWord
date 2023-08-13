@@ -55,7 +55,7 @@ public class BulletinService {
 					e.printStackTrace();
 				}
 				
-				if(option == -1 || option < 0 || option > files.length) {
+				if(option == -1 || option <= 0 || option > files.length) {
 					break;
 				}
 				else {

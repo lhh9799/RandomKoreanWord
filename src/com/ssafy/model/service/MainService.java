@@ -8,8 +8,8 @@ import com.ssafy.model.User;
 
 public interface MainService {
 	public User login() throws RecordNotFoundException, InvalidDataException;
-	public User join() throws DuplicatedException, InvalidPasswordException;
-	public String findId(User loginUser) throws RecordNotFoundException;
+	public User join() throws DuplicatedException, InvalidPasswordException, InvalidDataException;
+	public String findId(User loginUser) throws RecordNotFoundException, InvalidDataException;
 	public String findPw() throws RecordNotFoundException;
 	public void myInfo(User loginUser) throws RecordNotFoundException;
 	public void updatePw(User loginUser) throws RecordNotFoundException;

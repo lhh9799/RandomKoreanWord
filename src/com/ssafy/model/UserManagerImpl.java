@@ -184,9 +184,6 @@ public class UserManagerImpl implements UserManager {
 		int index = isExist(id);
 		
 		if (index == -1) {
-			for(User u : list) {
-				System.out.println(u);
-			}
 			throw new RecordNotFoundException(id);
 		}
 		
@@ -196,17 +193,10 @@ public class UserManagerImpl implements UserManager {
 			String old_PW = i.getKey();
 			String new_PW = i.getValue();
 			
-			if(targetUser.getPw().equals(old_PW)) {
-				targetUser.setPw(map.get(old_PW));
-				System.out.println("비밀번호 변경 성공");
-				saveData();
-				saveDataCsv();
-			}
-			else {
-				System.out.println("old_PW: " + old_PW);
-				System.out.println("new_PW: " + new_PW);
-				System.out.println("현재 비밀번호가 일치하지 않습니다.");
-			}
+			targetUser.setPw(String.valueOf(new_PW.hashCode()));
+			System.out.println("비밀번호 변경 성공");
+			saveData();
+			saveDataCsv();
 		}
 	}
 
@@ -332,10 +322,9 @@ public class UserManagerImpl implements UserManager {
     public User login(String id, String pw) throws RecordNotFoundException, InvalidDataException {
         int index = isExist(id);
         if(index==-1) {
-//            throw new RecordNotFoundException();
             throw new RecordNotFoundException("아이디 또는 비밀번호 ");
         }
-        if (list.get(index).getPw().equals(pw)) {
+        if (list.get(index).getPw().equals(String.valueOf(pw.hashCode()))) {
             return list.get(index);
         } else {
             throw new InvalidDataException("아이디 또는 비밀번호 ");
