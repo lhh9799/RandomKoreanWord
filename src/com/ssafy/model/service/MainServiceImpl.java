@@ -223,7 +223,7 @@ public class MainServiceImpl implements MainService {
 			}
 			
 			while(true) {
-				System.out.print("새 비밀번호 (비밀번호는 특수문자 1 자리를 포함하고 8자리 ~ 15자리이어야 합니다.): ");
+				System.out.print("새 비밀번호 (비밀번호는 특수문자 1 자리와 대문자 1 자리를 포함하고 8자리 ~ 15자리이어야 합니다.): ");
 				new_pw = br.readLine().trim();
 				System.out.print("새 비밀번호 확인: ");
 				confirm_new_pw = br.readLine().trim();
